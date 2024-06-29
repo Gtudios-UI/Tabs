@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a020c352-39ad-4567-bf31-df5b7ebfacb3</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Tabs</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomizablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.Shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderFooterContent\HeaderFooterContent.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderFooterContent\HeaderFooterContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderFooterContent\HeaderFooterContent.Panel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OffsetElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OrientationNeutralAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tabs\TabContainer\TabContainer.Template.Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tabs\TabContainer\TabContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabcontainer\TabContainer.Elements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabcontainer\TabContainer.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tabs\TabItem\TabItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabitem\TabItem.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabitem\TabItem.Template.Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tabs\TabView\TabView.Elements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tabs\TabView\TabView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabview\TabView.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)tabs\tabview\TabView.Template.Default.cs" />
+  </ItemGroup>
+</Project>
