@@ -1,7 +1,9 @@
 
+using Get.UI.Data;
+
 namespace Gtudios.UI;
 
-public class CustomizablePanel : Panel
+public class CustomizablePanel : NamedPanel
 {
     public event Func<Size, Size>? OnMeasure;
     public event Func<Size, Size>? OnArrange;

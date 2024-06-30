@@ -11,7 +11,7 @@ partial class TabView<T>
     public readonly static ExternalControlTemplate<TabViewTemplateParts, TabView<T>, OrientedStack> DefaultTemplate =
         (@this, os) =>
         {
-            os.OrientationProperty.Bind(@this.OrientationProperty, ReadOnlyBindingModes.OneWay);
+            os.OrientationProperty.Bind(@this.OrientationProperty.Select(x => x is Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal), ReadOnlyBindingModes.OneWay);
             os.HorizontalAlignment = HorizontalAlignment.Stretch;
             os.VerticalAlignment = VerticalAlignment.Stretch;
             var shouldBeVisible = @this.SelectedValueProperty.Select(x => x is not null ? Visibility.Visible : Visibility.Collapsed);
@@ -45,20 +45,31 @@ partial class TabView<T>
                 Orientation = Orientation.Vertical,
                 Children =
                 {
-                    new TypedContentControl<T>()
-                    .WithCustomCode(x => x.ContentProperty.Bind(@this.SelectedValueProperty, ReadOnlyBindingModes.OneWay))
-                    .WithCustomCode(x => x.ContentTemplateProperty.Bind(@this.ToolbarTemplateProperty, ReadOnlyBindingModes.OneWay))
+                    new ContentBundleControl {
+                        ContentBundle = new ContentBundle<T, UIElement>()
+                        .WithCustomCode(x =>
+                        {
+                            x.ContentProperty.Bind(@this.SelectedValueProperty, ReadOnlyBindingModes.OneWay);
+                            x.ContentTemplateProperty.Bind(@this.ToolbarTemplateProperty, ReadOnlyBindingModes.OneWay);
+                        })
+                    }
                     .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, GridLength.Auto))
                     .WithCustomCode(x =>
-                        VisibilityProperty.AsProperty<TypedContentControl<T>, Visibility>(x)
+                        VisibilityProperty.AsProperty<ContentBundleControl, Visibility>(x)
                         .Bind(shouldBeVisible, ReadOnlyBindingModes.OneWay)
                     ),
-                    new TypedContentControl<T>()
-                    .WithCustomCode(x => x.ContentProperty.Bind(@this.SelectedValueProperty, ReadOnlyBindingModes.OneWay))
-                    .WithCustomCode(x => x.ContentTemplateProperty.Bind(@this.ToolbarTemplateProperty, ReadOnlyBindingModes.OneWay))
+                    new ContentBundleControl
+                    {
+                        ContentBundle = new ContentBundle<T, UIElement>()
+                        .WithCustomCode(x =>
+                        {
+                            x.ContentProperty.Bind(@this.SelectedValueProperty, ReadOnlyBindingModes.OneWay);
+                            x.ContentTemplateProperty.Bind(@this.ContentTemplateProperty, ReadOnlyBindingModes.OneWay);
+                        })
+                    }
                     .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, new(1, GridUnitType.Star)))
                     .WithCustomCode(x =>
-                        VisibilityProperty.AsProperty<TypedContentControl<T>, Visibility>(x)
+                        VisibilityProperty.AsProperty<ContentBundleControl, Visibility>(x)
                         .Bind(shouldBeVisible, ReadOnlyBindingModes.OneWay)
                     )
                 }

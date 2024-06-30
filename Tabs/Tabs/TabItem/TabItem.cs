@@ -30,7 +30,7 @@ public partial class TabItem<T> : MotionDragSelectableItem<T>
     internal async Task<bool> InternalAttemptToCloseAsync()
     {
         TabClosingHandledEventArgs args = new();
-        Closing(this, args);
+        Closing?.Invoke(this, args);
         await args.InternalWaitAsync();
         if (args.Handled)
         {

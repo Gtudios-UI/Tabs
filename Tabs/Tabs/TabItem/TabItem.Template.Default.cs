@@ -14,8 +14,8 @@ partial class TabItem<T>
         {
             var a = MotionDragSelectableItem<T>.DefaultTemplate(@this, border);
             var BackgroundPlace = (Border)border.Child;
-            var ContentControl = (TypedContentControl<T>)BackgroundPlace.Child;
-            var BackgroundPlacePBackgroundroperty = Border.BackgroundProperty.AsProperty<Border, SolidColorBrush>(BackgroundPlace);
+            var ContentControl = (ContentBundleControl)BackgroundPlace.Child;
+            var BackgroundPlaceBackgroundProperty = Border.BackgroundProperty.AsProperty<Border, SolidColorBrush>(BackgroundPlace);
             BackgroundPlace.Child = null; // removes ContentControl from background place
             BackgroundPlace.Child = new OrientedStack
             {
@@ -55,10 +55,10 @@ partial class TabItem<T>
                             "F1 M 0 6 C 3 6 6 3 6 0 L 6 6 Z"
                         ),
                         Margin = new(0),
-                        Fill = SelfNote.ThrowNotImplemented<Brush>(), // Binding of BackgroundPlace.Background
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Bottom
-                    },
+                    }
+                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, SolidColorBrush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay)),
                     new Path
                     {
                         Data = (Geometry)XamlBindingHelper.ConvertValue(
@@ -66,11 +66,10 @@ partial class TabItem<T>
                             "F1 M 6 6 C 3 6 0 3 0 0 L 0 6 Z"
                         ),
                         Margin = new(0),
-                        Fill = SelfNote.ThrowNotImplemented<Brush>(), // Binding of BackgroundPlace.Background
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Bottom
                     }
-                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, SolidColorBrush>(x).Bind(BackgroundPlacePBackgroundroperty, ReadOnlyBindingModes.OneWay))
+                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, SolidColorBrush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay))
                 }
             };
             return new(CloseButton, a);
