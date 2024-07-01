@@ -1,4 +1,5 @@
 using Get.Data.Bindings;
+using Get.Data.Bindings.Linq;
 using Get.Data.Helpers;
 using Get.Data.Properties;
 using Get.UI.Controls.Panels;
@@ -12,10 +13,20 @@ partial class TabItem<T>
     public new readonly static ExternalControlTemplate<TabItemTemplateParts, TabItem<T>, Border> DefaultTemplate =
         (@this, border) =>
         {
-            var a = MotionDragSelectableItem<T>.DefaultTemplate(@this, border);
-            var BackgroundPlace = (Border)border.Child;
+            var a = MotionDragItem<T>.DefaultTemplate(@this, border);
+            var tmp = border.Child;
+            border.BorderThickness = default;
+            border.Child = null;
+            border.Child = new Border
+            {
+                Child = tmp
+            }.AssignTo(out var BackgroundPlace);
+            BackgroundPlace = (Border)border.Child;
+            BackgroundPlace.Margin = new(6, 0, 6, 0);
+            BackgroundPlace.CornerRadius = new(6, 6, 0, 0);
             var ContentControl = (ContentBundleControl)BackgroundPlace.Child;
-            var BackgroundPlaceBackgroundProperty = Border.BackgroundProperty.AsProperty<Border, SolidColorBrush>(BackgroundPlace);
+            var BackgroundPlaceBackgroundProperty = Border.BackgroundProperty.AsProperty<Border, Brush>(BackgroundPlace);
+            var BackgroundPlaceBorderProperty = Border.BorderBrushProperty.AsProperty<Border, Brush>(BackgroundPlace);
             BackgroundPlace.Child = null; // removes ContentControl from background place
             BackgroundPlace.Child = new OrientedStack
             {
@@ -58,7 +69,8 @@ partial class TabItem<T>
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Bottom
                     }
-                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, SolidColorBrush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay)),
+                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, Brush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay))
+                    .AssignTo(out var corner1),
                     new Path
                     {
                         Data = (Geometry)XamlBindingHelper.ConvertValue(
@@ -69,9 +81,51 @@ partial class TabItem<T>
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Bottom
                     }
-                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, SolidColorBrush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay))
+                    .WithCustomCode(x => Shape.FillProperty.AsProperty<Path, Brush>(x).Bind(BackgroundPlaceBackgroundProperty, ReadOnlyBindingModes.OneWay))
+                    .AssignTo(out var corner2)
                 }
             };
+
+            Property<PointerState> pointerstates = new(PointerState.Normal);
+
+            var binding = from selected in @this.IsSelectedProperty
+                          from pointerState in @pointerstates
+                          select (pointerState, selected);
+            var TabViewItemHeaderBackgroundSelected = ThemeResources.Create<Brush>("TabViewItemHeaderBackgroundSelected", BackgroundPlace);
+            var TabViewSelectedItemBorderBrush = ThemeResources.Create<Brush>("TabViewSelectedItemBorderBrush", BackgroundPlace);
+            var ControlFillColorTertiaryBrush = ThemeResources.Create<Brush>("ControlFillColorTertiaryBrush", BackgroundPlace);
+            var ControlFillColorDisabledBrush = ThemeResources.Create<Brush>("ControlFillColorDisabledBrush", BackgroundPlace);
+            var Transparent = new ReadOnlyProperty<Brush>(new SolidColorBrush(Colors.Transparent));
+            Set(binding.CurrentValue.pointerState, binding.CurrentValue.selected);
+            binding.ValueChanged += (_, x) => Set(x.pointerState, x.selected);
+            void Set(PointerState state, bool isSelected)
+            {
+                if (isSelected)
+                {
+                    BackgroundPlaceBackgroundProperty.Bind(TabViewItemHeaderBackgroundSelected, ReadOnlyBindingModes.OneWay);
+                    BackgroundPlaceBorderProperty.Bind(TabViewSelectedItemBorderBrush, ReadOnlyBindingModes.OneWay);
+                } else
+                {
+                    switch (state)
+                    {
+                        case PointerState.Normal:
+                            BackgroundPlaceBackgroundProperty.Bind(Transparent, ReadOnlyBindingModes.OneWay);
+                            break;
+                        case PointerState.PointerOver:
+                            BackgroundPlaceBackgroundProperty.Bind(ControlFillColorTertiaryBrush, ReadOnlyBindingModes.OneWay);
+                            break;
+                        case PointerState.Pressed:
+                            BackgroundPlaceBackgroundProperty.Bind(ControlFillColorDisabledBrush, ReadOnlyBindingModes.OneWay);
+                            break;
+                    }
+                }
+            }
             return new(CloseButton, a);
         };
+    enum PointerState
+    {
+        Normal,
+        PointerOver,
+        Pressed
+    }
 }

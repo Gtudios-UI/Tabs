@@ -15,7 +15,7 @@ partial class TabContainer<T>
     public Property<ContentBundle?> FooterProperty { get; } = new(default);
     public Property<ContentBundle?> InlineFooterProperty { get; } = new(default);
     public Property<double?> TabContainerRequestedSizeProperty { get; } = new(default);
-    public Property<Orientation> OrientationProperty { get; } = new(default);
+    public Property<Orientation> OrientationProperty { get; } = new(Orientation.Horizontal);
     public Property<OrientationNeutralAlignment> AlignmentProperty { get; } = new(default);
     public Property<CenterAlignmentResolvingMode> CenterAlignmentResolvingModeProperty { get; } = new(default);
     /// <summary>The start offset for footer. Note that this does not effect the centered element.</summary>
