@@ -1,4 +1,5 @@
-﻿using Get.UI.Controls.Panels;
+﻿using Get.Data.Properties;
+using Get.UI.Controls.Panels;
 using Get.UI.Data;
 using System.Threading.Tasks;
 

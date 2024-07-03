@@ -25,6 +25,7 @@ partial class TabContainer<T>
     public ReadOnlyProperty<T?> SelectedValueProperty { get; }
     Property<T?> _SelectedValueProperty { get; } = new(default);
     public Property<int> SelectedIndexProperty { get; } = new(0);
+    public Property<bool> PreferAlwaysSelectItemProperty { get; } = new(true);
     public Property<MotionDragConnectionContext<T>> ConnectionContextProperty { get; } = new(new());
     public Property<Visibility> AddTabButtonVisibilityProperty { get; } = new(new());
     public Property<IUpdateCollection<T>?> ItemsSourceProperty { get; } = new(default);

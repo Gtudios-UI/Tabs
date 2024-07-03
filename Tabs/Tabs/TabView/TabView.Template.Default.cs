@@ -34,7 +34,8 @@ partial class TabView<T>
                     x.ConnectionContextProperty.Bind(@this.ConnectionContextProperty, ReadOnlyBindingModes.OneWay);
                     x.AddTabButtonVisibilityProperty.Bind(@this.AddTabButtonVisibilityProperty, ReadOnlyBindingModes.OneWay);
                     x.ItemsSourceProperty.Bind(@this.ItemsSourceProperty, ReadOnlyBindingModes.OneWay);
-                    x.ItemTemplateProperty.Bind(@this.ItemTemplateProperty, ReadOnlyBindingModes.OneWay);
+                    x.ItemTemplateProperty.Bind(@this.TabItemTemplateProperty, ReadOnlyBindingModes.OneWay);
+                    x.PreferAlwaysSelectItemProperty.Bind(@this.PreferAlwaysSelectItemProperty, ReadOnlyBindingModes.OneWay);
                     VisibilityProperty.AsProperty<TabContainer<T>, Visibility>(x).Bind(@this.TabsVisibilityProperty, ReadOnlyBindingModes.OneWay);
                     OrientedStack.LengthProperty.SetValue(x, GridLength.Auto);
                 })
@@ -64,7 +65,7 @@ partial class TabView<T>
                         .WithCustomCode(x =>
                         {
                             x.ContentProperty.Bind(@this.SelectedValueProperty, ReadOnlyBindingModes.OneWay);
-                            x.ContentTemplateProperty.Bind(@this.ContentTemplateProperty, ReadOnlyBindingModes.OneWay);
+                            x.ContentTemplateProperty.Bind(@this.TabContentTemplateProperty, ReadOnlyBindingModes.OneWay);
                         })
                     }
                     .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, new(1, GridUnitType.Star)))

@@ -23,8 +23,7 @@ partial class TabContainer<T>
                             new MotionDragSelectableContainer<T>
                             {
                                 MinWidth = 100,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                PreferAlwaysSelectItem = true
+                                VerticalAlignment = VerticalAlignment.Center
                             }
                             .WithCustomCode(x =>
                                 HeightProperty.AsProperty<MotionDragSelectableContainer<T>, double>(x).Bind(
@@ -39,6 +38,7 @@ partial class TabContainer<T>
                                 x.SelectedValueProperty.BindOneWayToSource(@this._SelectedValueProperty);
                                 x.ReorderOrientationProperty.Bind(@this.OrientationProperty, ReadOnlyBindingModes.OneWay);
                                 x.ConnectionContextProperty.Bind(@this.ConnectionContextProperty, ReadOnlyBindingModes.OneWay);
+                                x.PreferAlwaysSelectItemProperty.Bind(@this.PreferAlwaysSelectItemProperty, ReadOnlyBindingModes.OneWay);
                             })
                             .AssignTo(out var Container),
                             new Button

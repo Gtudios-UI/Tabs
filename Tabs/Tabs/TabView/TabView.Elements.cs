@@ -22,14 +22,15 @@ partial class TabView<T>
     public Property<double> TitleBarLeftInset { get; } = new(default);
     /// <summary>The end offset for footer. Note that this does not effect the centered element.</summary>
     public Property<double> TitleBarRightInset { get; } = new(default);
+    public Property<bool> PreferAlwaysSelectItemProperty { get; } = new(true);
     public ReadOnlyProperty<T?> SelectedValueProperty { get; }
     Property<T?> _SelectedValueProperty { get; } = new(default);
     public Property<int> SelectedIndexProperty { get; } = new(0);
     public Property<MotionDragConnectionContext<T>> ConnectionContextProperty { get; } = new(new());
     public Property<Visibility> AddTabButtonVisibilityProperty { get; } = new(new());
     public Property<IUpdateCollection<T>?> ItemsSourceProperty { get; } = new(default);
-    public Property<IDataTemplate<SelectableItem<T>, MotionDragItem<T>>?> ItemTemplateProperty { get; } = new(default);
+    public Property<IDataTemplate<SelectableItem<T>, MotionDragItem<T>>?> TabItemTemplateProperty { get; } = new(default);
     public Property<IDataTemplate<T, UIElement>?> ToolbarTemplateProperty { get; } = new(default);
-    public Property<IDataTemplate<T, UIElement>?> ContentTemplateProperty { get; } = new(default);
+    public Property<IDataTemplate<T, UIElement>?> TabContentTemplateProperty { get; } = new(default);
     public Property<Visibility> TabsVisibilityProperty { get; } = new(new());
 }
