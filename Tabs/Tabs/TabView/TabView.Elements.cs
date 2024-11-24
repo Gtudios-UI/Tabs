@@ -15,7 +15,7 @@ partial class TabView<T>
     public IProperty<UIElement?> FooterProperty { get; } = Auto<UIElement?>(default);
     public IProperty<UIElement?> InlineFooterProperty { get; } = Auto<UIElement?>(default);
     public IProperty<double?> TabContainerRequestedSizeProperty { get; } = Auto<double?>(default);
-    public IProperty<Orientation> OrientationProperty { get; } = Auto<Orientation>(default);
+    public IProperty<Orientation> OrientationProperty { get; } = Auto(Orientation.Horizontal);
     public IProperty<OrientationNeutralAlignment> AlignmentProperty { get; } = Auto<OrientationNeutralAlignment>(default);
     public IProperty<CenterAlignmentResolvingMode> CenterAlignmentResolvingModeProperty { get; } = Auto<CenterAlignmentResolvingMode>(default);
     /// <summary>The start offset for footer. Note that this does not effect the centered element.</summary>
