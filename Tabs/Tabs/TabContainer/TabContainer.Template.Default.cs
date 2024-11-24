@@ -12,34 +12,33 @@ partial class TabContainer<T>
     static ExternalControlTemplate<TabContainerTemplateParts<T>, TabContainer<T>, HeaderFooterContent> DefaultTemplate { get; } =
         (@this, item) =>
         {
-            item.Content = new ConstantContentBundle(
+            item.Content =
                 new ScrollViewer
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Content = new OrientedStack
                     {
+                        OrientationBinding = OneWay(@this.OrientationProperty),
                         Children =
                         {
                             new MotionDragSelectableContainer<T>
                             {
                                 MinWidth = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
-                                PreferAlwaysSelectItem = true
+                                // up to user
+                                // need to set in SelectionManager
+                                // PreferAlwaysSelectItem = true,
+                                SelectionManagerBinding = OneWay(@this.SelectionManagerProperty),
+                                TargetCollectionBinding = OneWay(@this.TargetCollectionProperty),
+                                ItemTemplateBinding = OneWay(@this.ItemTemplateProperty),
+                                ReorderOrientationBinding = OneWay(@this.OrientationProperty),
+                                ConnectionContextBinding = OneWay(@this.ConnectionContextProperty),
                             }
                             .WithCustomCode(x =>
                                 HeightProperty.AsProperty<MotionDragSelectableContainer<T>, double>(x).Bind(
                                     HeightProperty.AsProperty<TabContainer<T>, double>(@this),
                                     ReadOnlyBindingModes.OneWay
-                                ))
-                            .WithCustomCode(x =>
-                            {
-                                x.ItemsSourceProperty.Bind(@this.ItemsSourceProperty, ReadOnlyBindingModes.OneWay);
-                                x.ItemTemplateProperty.Bind(@this.ItemTemplateProperty, ReadOnlyBindingModes.OneWay);
-                                x.SelectedIndexProperty.Bind(@this.SelectedIndexProperty, BindingModes.TwoWay);
-                                x.SelectedValueProperty.BindOneWayToSource(@this._SelectedValueProperty);
-                                x.ReorderOrientationProperty.Bind(@this.OrientationProperty, ReadOnlyBindingModes.OneWay);
-                                x.ConnectionContextProperty.Bind(@this.ConnectionContextProperty, ReadOnlyBindingModes.OneWay);
-                            })
+                            ))
                             .AssignTo(out var Container),
                             new Button
                             {
@@ -69,12 +68,9 @@ partial class TabContainer<T>
                     .WithCustomCode(x =>
                     {
                         x.Name = $"Hello World! - {x.Name}";
-                        x.OrientationProperty.Bind(@this.OrientationProperty, ReadOnlyBindingModes.OneWay);
-
                     })
                 }
-                .AssignTo(out var ContainerAreaScrollViewer)
-            );
+                .AssignTo(out var ContainerAreaScrollViewer);
             item.WithCustomCode(x =>
             {
                 x.HeaderProperty.Bind(@this.HeaderProperty, ReadOnlyBindingModes.OneWay);

@@ -29,7 +29,7 @@ partial class HeaderFooterContent
         if (footerSize.Opposite > maxOpp) maxOpp = footerSize.Opposite;
         
         if (ContentAndInline is not { } content) return default;
-        if (CenterAlignmentResolvingModeProperty.Value is CenterAlignmentResolvingMode.AbsoluteCenterResizeDown)
+        if (CenterAlignmentResolvingMode is CenterAlignmentResolvingMode.AbsoluteCenterResizeDown)
             content.Measure(
                 OFToSize((Math.Max(Math.Min(
                     avalSize.Along - Math.Max(headerSize.Along, footerSize.Along) * 2,
@@ -85,7 +85,7 @@ partial class HeaderFooterContent
             OFToPoint((panelSize.Along - footerSize.Along, 0)),
             OFToSize((footerSize.Along, panelSize.Opposite))
         ));
-        var alignment = AlignmentProperty.Value;
+        var alignment = Alignment;
         if (alignment is OrientationNeutralAlignment.Center)
         {
             var remainingSize = panelSize.Along - headerSize.Along - footerSize.Along;
@@ -102,7 +102,7 @@ partial class HeaderFooterContent
                 content.Arrange(rect);
                 return finalSize;
             }
-            else if (CenterAlignmentResolvingModeProperty.Value is CenterAlignmentResolvingMode.AbsoluteCenterResizeDown)
+            else if (CenterAlignmentResolvingMode is CenterAlignmentResolvingMode.AbsoluteCenterResizeDown)
             {
                 remainingSizeToBeCentered = Math.Max(0, remainingSizeToBeCentered);
                 // center the element but with remaining size

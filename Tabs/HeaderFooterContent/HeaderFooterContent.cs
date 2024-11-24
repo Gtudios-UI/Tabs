@@ -1,3 +1,4 @@
+using Get.Data.Bundles;
 using Get.Data.Properties;
 using Get.UI.Data;
 
@@ -8,36 +9,22 @@ namespace Gtudios.UI.Controls;
 [TemplatePart(Type = typeof(UIElement), Name = "FooterAndInset")]
 [TemplatePart(Type = typeof(CustomizablePanel), Name = "PanelHost")]
 [ContentProperty(Name = nameof(ContentProperty))]
+[AutoProperty]
 public partial class HeaderFooterContent : TemplateControl<CustomizablePanel>
 {
-    public Property<ContentBundle?> HeaderProperty { get; } = new(default);
-    public Property<ContentBundle?> InlineHeaderProperty { get; } = new(default);
-    public Property<ContentBundle?> FooterProperty { get; } = new(default);
-    public Property<ContentBundle?> InlineFooterProperty { get; } = new(default);
-    public Property<ContentBundle?> ContentProperty { get; } = new(default);
-    public ContentBundle? Content
-    {
-        get => ContentProperty.Value;
-        set => ContentProperty.Value = value;
-    }
-    public Property<double?> ContentRequestedSizeProperty { get; } = new(default);
-    public Property<Orientation> OrientationProperty { get; } = new(default);
-    public Property<OrientationNeutralAlignment> AlignmentProperty { get; } = new(default);
-    public Property<CenterAlignmentResolvingMode> CenterAlignmentResolvingModeProperty { get; } = new(default);
+    public IProperty<UIElement?> HeaderProperty { get; } = Auto<UIElement?>(default);
+    public IProperty<UIElement?> InlineHeaderProperty { get; } = Auto<UIElement?>(default);
+    public IProperty<UIElement?> FooterProperty { get; } = Auto<UIElement?>(default);
+    public IProperty<UIElement?> InlineFooterProperty { get; } = Auto<UIElement?>(default);
+    public IProperty<UIElement?> ContentProperty { get; } = Auto<UIElement?>(default);
+    public IProperty<double?> ContentRequestedSizeProperty { get; } = Auto<double?>(default);
+    public IProperty<Orientation> OrientationProperty { get; } = Auto<Orientation>(default);
+    public IProperty<OrientationNeutralAlignment> AlignmentProperty { get; } = Auto<OrientationNeutralAlignment>(default);
+    public IProperty<CenterAlignmentResolvingMode> CenterAlignmentResolvingModeProperty { get; } = Auto<CenterAlignmentResolvingMode>(default);
     /// <summary>The start offset for footer. Note that this does not effect the centered element.</summary>
-    public Property<double> StartInsetProperty { get; } = new(default);
+    public IProperty<double> StartInsetProperty { get; } = Auto(0d);
     /// <summary>The end offset for footer. Note that this does not effect the centered element.</summary>
-    public Property<double> EndInsetProperty { get; } = new(default);
-    public double? ContentRequestedSize
-    {
-        get => ContentRequestedSizeProperty.Value;
-        set => ContentRequestedSizeProperty.Value = value;
-    }
-    public Orientation Orientation
-    {
-        get => OrientationProperty.Value;
-        set => OrientationProperty.Value = value;
-    }
+    public IProperty<double> EndInsetProperty { get; } = Auto(0d);
     public HeaderFooterContent()
     {
         ContentRequestedSizeProperty.ValueChanged += (_, _) => UpdatePanel();

@@ -13,7 +13,6 @@ public partial class TabContainer<T> : TemplateControl<HeaderFooterContent>
     public event EventHandler<TabClosedRequestEventArgs<T>> TabCloseRequest;
     public TabContainer()
     {
-        SelectedValueProperty = new(_SelectedValueProperty);
         OrientationProperty.ValueChanged += (_, newValue) =>
         {
             UpdateScrollView(newValue);
@@ -41,12 +40,12 @@ public partial class TabContainer<T> : TemplateControl<HeaderFooterContent>
     }
     internal async Task<bool> InternalCallTabCloseRequestAsync(TabItem<T> tabItem)
     {
-        TabClosedRequestEventArgs<T> args = new(tabItem, Container.ItemsSourceProperty[Container.ChildContainers.IndexOf(tabItem)]);
+        TabClosedRequestEventArgs<T> args = new(tabItem, Container.TargetCollection[Container.ChildContainers.IndexOf(tabItem)]);
         TabCloseRequest?.Invoke(this, args);
         await args.InternalWaitAsync();
         if (args.RemoveRequest)
         {
-            Container.ItemsSourceProperty.RemoveAt(Container.ChildContainers.IndexOf(tabItem));
+            Container.TargetCollection.RemoveAt(Container.ChildContainers.IndexOf(tabItem));
             return true;
         }
         return false;
@@ -56,11 +55,11 @@ public partial class TabContainer<T> : TemplateControl<HeaderFooterContent>
         while (Container.ChildContainers[0] is { } a &&
             a.FindDescendantOrSelf<TabItem<T>>() is { } tabItem)
         {
-            var item = Container.ItemsSourceProperty[0];
+            var item = Container.TargetCollection[0];
             if (!await tabItem.InternalAttemptToCloseAsync())
             {
                 // check if the library consumer removes item from container themselves or not
-                if (ReferenceEquals(item, Container.ItemsSourceProperty[0]))
+                if (ReferenceEquals(item, Container.TargetCollection[0]))
                 {
                     return false;
                 }

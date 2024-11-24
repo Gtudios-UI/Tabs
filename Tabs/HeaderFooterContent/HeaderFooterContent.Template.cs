@@ -22,28 +22,35 @@ partial class HeaderFooterContent
         {
             Children =
             {
-                new OffsetElement()
-                .WithCustomCode(x =>
+                new OffsetElement
                 {
-                    x.OrientationProperty.Bind(OrientationProperty, ReadOnlyBindingModes.OneWay);
-                    x.OffsetAmountProperty.Bind(StartInsetProperty, ReadOnlyBindingModes.OneWay);
-                }),
-                new ContentBundleControl()
-                .WithCustomCode(x => x.ContentBundleProperty.Bind(HeaderProperty, ReadOnlyBindingModes.OneWay))
+                    OrientationBinding = OneWay(OrientationProperty),
+                    OffsetAmountBinding = OneWay(StartInsetProperty)
+                },
+                new UIElementContentControl
+                {
+                    ContentBinding = OneWay(HeaderProperty)
+                }
             }
         }.AssignTo(out HeaderAndInset));
         rootElement.Children.Add(new OrientedStack
         {
             Children =
             {
-                new ContentBundleControl()
-                .WithCustomCode(x => x.ContentBundleProperty.Bind(InlineHeaderProperty, ReadOnlyBindingModes.OneWay))
+                new UIElementContentControl
+                {
+                    ContentBinding = OneWay(InlineHeaderProperty)
+                }
                 .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, GridLength.Auto)),
-                new ContentBundleControl()
-                .WithCustomCode(x => x.ContentBundleProperty.Bind(ContentProperty, ReadOnlyBindingModes.OneWay))
+                new UIElementContentControl
+                {
+                    ContentBinding = OneWay(ContentProperty)
+                }
                 .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, new(1, GridUnitType.Star))),
-                new ContentBundleControl()
-                .WithCustomCode(x => x.ContentBundleProperty.Bind(InlineFooterProperty, ReadOnlyBindingModes.OneWay))
+                new UIElementContentControl
+                {
+                    ContentBinding = OneWay(InlineFooterProperty)
+                }
                 .WithCustomCode(x => OrientedStack.LengthProperty.SetValue(x, GridLength.Auto)),
             }
         }.AssignTo(out ContentAndInline));
@@ -51,14 +58,15 @@ partial class HeaderFooterContent
         {
             Children =
             {
-                new ContentBundleControl()
-                .WithCustomCode(x => x.ContentBundleProperty.Bind(FooterProperty, ReadOnlyBindingModes.OneWay)),
-                new OffsetElement()
-                .WithCustomCode(x =>
+                new UIElementContentControl
                 {
-                    x.OrientationProperty.Bind(OrientationProperty, ReadOnlyBindingModes.OneWay);
-                    x.OffsetAmountProperty.Bind(EndInsetProperty, ReadOnlyBindingModes.OneWay);
-                })
+                    ContentBinding = OneWay(FooterProperty)
+                },
+                new OffsetElement
+                {
+                    OrientationBinding = OneWay(OrientationProperty),
+                    OffsetAmountBinding = OneWay(EndInsetProperty)
+                }
             }
         }.AssignTo(out FooterAndInset));
     }

@@ -95,7 +95,7 @@ partial class TabItem<T>
             var TabViewSelectedItemBorderBrush = ThemeResources.Create<Brush>("TabViewSelectedItemBorderBrush", BackgroundPlace);
             var ControlFillColorTertiaryBrush = ThemeResources.Create<Brush>("ControlFillColorTertiaryBrush", BackgroundPlace);
             var ControlFillColorDisabledBrush = ThemeResources.Create<Brush>("ControlFillColorDisabledBrush", BackgroundPlace);
-            var Transparent = new ReadOnlyProperty<Brush>(new SolidColorBrush(Colors.Transparent));
+            var Transparent = AutoReadOnly<Brush>(new SolidColorBrush(Colors.Transparent));
             Set(binding.CurrentValue.pointerState, binding.CurrentValue.selected);
             binding.ValueChanged += (_, x) => Set(x.pointerState, x.selected);
             void Set(PointerState state, bool isSelected)

@@ -3,20 +3,12 @@ using Get.Data.Properties;
 using Get.UI.Data;
 
 namespace Gtudios.UI.Controls;
+[AutoProperty]
 public partial class OffsetElement : TemplateControl<Border>
 {
-    public Property<Orientation> OrientationProperty { get; } = new(default);
-    public Orientation Orientation
-    {
-        get => OrientationProperty.Value;
-        set => OrientationProperty.Value = value;
-    }
-    public Property<double> OffsetAmountProperty { get; } = new(default);
-    public double OffsetAmount
-    {
-        get => OffsetAmountProperty.Value;
-        set => OffsetAmountProperty.Value = value;
-    }
+    public IProperty<Orientation> OrientationProperty { get; } = Auto<Orientation>(default);
+    public IProperty<double> OffsetAmountProperty { get; } = Auto<double>(default);
+    
 
     public OffsetElement()
     {

@@ -14,7 +14,6 @@ public partial class TabView<T> : TemplateControl<OrientedStack>
         ControlTemplate = DefaultTemplate;
         HorizontalAlignment = HorizontalAlignment.Stretch;
         VerticalAlignment = VerticalAlignment.Stretch;
-        SelectedValueProperty = new(_SelectedValueProperty);
     }
     public event RoutedEventHandler? AddTabButtonClicked;
     public Task<bool> AttemptToCloseAllTabsAsync() => TabContainer?.AttemptToCloseAllTabsAsync() ?? Task.FromResult(false);

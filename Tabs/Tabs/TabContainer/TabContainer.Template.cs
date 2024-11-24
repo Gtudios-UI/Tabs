@@ -17,7 +17,7 @@ partial class TabContainer<T>
     protected override void Initialize(HeaderFooterContent rootElement)
     {
         TemplateParts = ControlTemplate(this, rootElement);
-        AddTabButton.Click += (o, e) => AddTabButtonClicked?.Invoke(o, e);
-        UpdateScrollView(OrientationProperty.Value);
+        AddTabButton!.Click += (o, e) => AddTabButtonClicked?.Invoke(o, e);
+        UpdateScrollView(Orientation);
     }
 }

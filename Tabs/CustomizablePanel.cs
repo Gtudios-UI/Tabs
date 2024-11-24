@@ -3,7 +3,7 @@ using Get.UI.Data;
 
 namespace Gtudios.UI;
 
-public class CustomizablePanel : NamedPanel
+public partial class CustomizablePanel : NamedPanel
 {
     public event Func<Size, Size>? OnMeasure;
     public event Func<Size, Size>? OnArrange;

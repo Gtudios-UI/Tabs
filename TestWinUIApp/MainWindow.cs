@@ -5,6 +5,7 @@ using Get.Data.Collections;
 using Get.Data.DataTemplates;
 using Get.Data.Helpers;
 using Get.Data.Properties;
+using Get.Data.UIModels;
 using Get.UI.Controls.Panels;
 using Get.UI.Data;
 using Gtudios.UI.Controls.Tabs;
@@ -29,49 +30,39 @@ class MainWindow : Window
     {
         ExtendsContentIntoTitleBar = true;
         SystemBackdrop = new MicaBackdrop();
+        var sm = new SelectionManagerMutable<string>(Items);
+        sm.PreferAlwaysSelectItem = true;
         Content = new TabView<string>
         {
             // didn't make title bar stuff yet so here's temporary one
             Margin = new(0, 30, 0, 0),
-            ItemsSourceProperty =
+            TargetCollection = Items,
+            SelectionManager = sm,
+            ItemTemplate = new DataTemplate<string, MotionDragItem<string>>(root =>
             {
-                Value = Items
-            },
-            ItemTemplateProperty =
-            {
-                Value = new DataTemplate<SelectableItem<string>, MotionDragItem<string>>(root =>
+                return new TabItem<string>
                 {
-                    var tab = new TabItem<string>();
-                    ContentBundle<string, UIElement> cb = new();
-                    cb.ContentProperty.Bind(root.SelectPath(x => x.IndexItemBinding).Select(x => x.Value), ReadOnlyBindingModes.OneWay);
-                    cb.ContentTemplateProperty.Value = new DataTemplate<string, UIElement>(
-                        str => new TextBlock()
-                        .WithCustomCode(x =>
-                            TextBlock.TextProperty.AsProperty<TextBlock, string>(x)
-                            .Bind(str, ReadOnlyBindingModes.OneWay)
-                        )
-                    );
-                    tab.ContentBundle = cb;
-                    return tab;
-                })
-            },
-            ContentTemplateProperty =
-            {
-                Value = new DataTemplate<string, UIElement>(str =>
-                    new TextBlock
+                    ContentBundle = new(root.CurrentValue)
                     {
-                        Margin = new(16)
+                        ContentBinding = OneWay(root),
+                        ContentTemplate = DataTemplates.TextBlockUIElement<string>()
                     }
-                    .WithCustomCode(x =>
-                        TextBlock.TextProperty.AsProperty<TextBlock, string>(x)
-                        .Bind(str.Select(x => $"You are currently selecting {x}"), ReadOnlyBindingModes.OneWay)
-                    )
+                };
+            }),
+            ContentTemplate = new DataTemplate<string, UIElement>(
+                root => new TextBlock
+                {
+                    Margin = new(16)
+                }
+                .WithCustomCode(x =>
+                    TextBlock.TextProperty.AsProperty<TextBlock, string>(x)
+                    .BindOneWay(root.Select(x => $"You are currently selecting {x}."))
                 )
-            }
+            )
         }.WithCustomCode(x => x.AddTabButtonClicked += (_, _) =>
         {
             Items.Add($"Item {i++}");
-            x.SelectedIndexProperty.Value = Items.Count - 1;
+            sm.SelectedIndex = Items.Count - 1;
         });
     }
 }

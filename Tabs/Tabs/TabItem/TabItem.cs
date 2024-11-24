@@ -11,7 +11,7 @@ public partial class TabItem<T> : MotionDragSelectableItem<T>
     public ReadOnlyProperty<Orientation> TabOrientationStyleProperty { get; }
     Property<Orientation> _TabOrientationStyleProperty = new(default);
     Button CloseButton => (Button)GetTemplateChild(nameof(CloseButton));
-    public event EventHandler<TabClosingHandledEventArgs> Closing;
+    public event EventHandler<TabClosingHandledEventArgs>? Closing;
     public TabItem()
     {
         ControlTemplate = DefaultTemplate;
@@ -21,8 +21,8 @@ public partial class TabItem<T> : MotionDragSelectableItem<T>
 
     private void TabItem_Loaded(object sender, RoutedEventArgs e)
     {
-        var targetOrientation = (Owner?.OrientationProperty as IReadOnlyProperty<Orientation>) ?? new ReadOnlyProperty<Orientation>(Orientation.Horizontal);
-        _TabOrientationStyleProperty.Bind(targetOrientation, ReadOnlyBindingModes.OneWay);
+        var targetOrientation = (Owner?.OrientationProperty as IReadOnlyProperty<Orientation>) ?? AutoReadOnly(Orientation.Horizontal);
+        _TabOrientationStyleProperty.BindOneWay(targetOrientation);
     }
 
     MotionDragSelectableContainer<T>? OwnerContainer => this.FindAscendant<MotionDragSelectableContainer<T>>();
@@ -37,7 +37,7 @@ public partial class TabItem<T> : MotionDragSelectableItem<T>
             if (args.RemoveRequest)
             {
                 if (OwnerContainer is { } con)
-                    con.ItemsSourceProperty.RemoveAt(con.ChildContainers.IndexOf(this));
+                    con.TargetCollection.RemoveAt(con.ChildContainers.IndexOf(this));
                 return true;
             } else return false;
         }
