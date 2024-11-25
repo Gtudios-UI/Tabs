@@ -33,9 +33,8 @@ partial class TabView<T>
                     EndInsetBinding = OneWay(@this.TitleBarRightInset),
                     SelectionManagerBinding = OneWay(@this.SelectionManagerProperty),
                     AddTabButtonVisibilityBinding = OneWay(@this.AddTabButtonVisibilityProperty),
-                    ItemTemplateBinding = OneWay(@this.ItemTemplateProperty),
+                    ItemTemplateBinding = OneWay(@this.ItemTemplateProperty.Select(x => x.DataTemplateHelper().As<MotionDragItem<T>>(x => x))),
                     ConnectionContextBinding = OneWay(@this.ConnectionContextProperty),
-                    TargetCollectionBinding = OneWay(@this.TargetCollectionProperty),
                 }
                 .WithCustomCode(x =>
                 {

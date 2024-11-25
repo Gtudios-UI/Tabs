@@ -28,9 +28,9 @@ partial class TabView<T>
     public IProperty<IUpdateCollection<T>> TargetCollectionProperty { get; }
         = Auto<IUpdateCollection<T>>(new UpdateCollection<T>());
 
-    public IProperty<IDataTemplate<T, MotionDragItem<T>>> ItemTemplateProperty { get; }
-        = Auto<IDataTemplate<T, MotionDragItem<T>>>(new DataTemplate<T, MotionDragItem<T>>(x =>
-            new MotionDragItem<T>
+    public IProperty<IDataTemplate<T, TabItem<T>>> ItemTemplateProperty { get; }
+        = Auto<IDataTemplate<T, TabItem<T>>>(new DataTemplate<T, TabItem<T>>(x =>
+            new TabItem<T>
             {
                 ContentBundle = new ContentBundle<T, UIElement>(x.CurrentValue)
                 {

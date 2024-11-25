@@ -28,8 +28,6 @@ partial class TabContainer<T>
     public IProperty<SelectionManagerMutable<T>> SelectionManagerProperty { get; } = Auto<SelectionManagerMutable<T>>(default);
     public IProperty<MotionDragConnectionContext<T>?> ConnectionContextProperty { get; } = Auto<MotionDragConnectionContext<T>?>(new());
     public IProperty<Visibility> AddTabButtonVisibilityProperty { get; } = Auto(Visibility.Visible);
-    public IProperty<IUpdateCollection<T>> TargetCollectionProperty { get; }
-        = Auto<IUpdateCollection<T>>(new UpdateCollection<T>());
     public IProperty<IDataTemplate<T, MotionDragItem<T>>> ItemTemplateProperty { get; }
         = Auto<IDataTemplate<T, MotionDragItem<T>>>(new DataTemplate<T, MotionDragItem<T>>(x =>
             new MotionDragItem<T>

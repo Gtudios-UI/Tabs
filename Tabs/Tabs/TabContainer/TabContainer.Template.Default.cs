@@ -29,7 +29,6 @@ partial class TabContainer<T>
                                 // need to set in SelectionManager
                                 // PreferAlwaysSelectItem = true,
                                 SelectionManagerBinding = OneWay(@this.SelectionManagerProperty),
-                                TargetCollectionBinding = OneWay(@this.TargetCollectionProperty),
                                 ItemTemplateBinding = OneWay(@this.ItemTemplateProperty),
                                 ReorderOrientationBinding = OneWay(@this.OrientationProperty),
                                 ConnectionContextBinding = OneWay(@this.ConnectionContextProperty),
